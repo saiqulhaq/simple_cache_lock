@@ -47,11 +47,11 @@ module SimpleCacheLock
 
 
     def lock_timeout
-      @options[:initial_lock_timeout] || 1000
+      @options[:initial_lock_timeout] || 10000
     end
 
     def wait_timeout
-      @options[:wait_timeout] || 3000
+      @options[:wait_timeout] || 40000
     end
 
     def wait_lock_timeout
