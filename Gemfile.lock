@@ -1,9 +1,9 @@
 PATH
   remote: .
   specs:
-    simple_cache_lock (0.1.0)
-      gem_config (= 0.3.1)
-      redlock (~> 1.0.0)
+    simple_cache_lock (0.1.1)
+      gem_config (~> 0.3, >= 0.3)
+      redlock (~> 1.0, >= 1.0.0)
 
 GEM
   remote: https://rubygems.org/
