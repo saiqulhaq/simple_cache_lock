@@ -22,7 +22,10 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+    SimpleCacheLock.configure do |config|
+      config.redis_urls = ['redis://localhost:6379', '...']
+      config.cache_store = Rails.cache
+    end
 
 ## Development
 
