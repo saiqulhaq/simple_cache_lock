@@ -47,15 +47,15 @@ module SimpleCacheLock
 
 
     def lock_timeout
-      @options[:initial_lock_timeout] || 10000
-    end
-
-    def wait_timeout
-      @options[:wait_timeout] || 40000
+      @options[:initial_lock_timeout] || SimpleCacheLock.configuration.default_lock_timeout
     end
 
     def wait_lock_timeout
-      @options[:wait_lock_timeout] || wait_timeout
+      @options[:wait_lock_timeout] || SimpleCacheLock.const_defined?.default_wait_lock_timeout
+    end
+
+    def wait_timeout
+      @options[:wait_timeout] || SimpleCacheLock.configuration.default_wait_timeout
     end
   end
 end
