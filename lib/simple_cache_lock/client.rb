@@ -16,13 +16,18 @@ module SimpleCacheLock
 
       if is_locked == false
         Timeout::timeout(wait_timeout) {
-          while is_locked = redlock.lock(lock_key, wait_lock_timeout) == false
-            sleep rand
+          loop do
+            is_locked = redlock.lock(lock_key, wait_lock_timeout)
+            if is_locked == false
+              sleep rand
+            else
+              break
+            end
           end
         }
 
         if cache_store.exist? content_cache_key
-          redlock.unlock(is_locked)
+          redlock.unlock(is_locked) unless is_locked
           return cache_store.read key
         end
       end
