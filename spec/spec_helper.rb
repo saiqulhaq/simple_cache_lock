@@ -1,5 +1,7 @@
 require "bundler/setup"
-require "simple_cache_lock"
+require 'simplecov'
+
+SimpleCov.start
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

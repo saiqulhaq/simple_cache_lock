@@ -1,3 +1,5 @@
+require "simple_cache_lock"
+
 RSpec.describe SimpleCacheLock do
   it "has a version number" do
     expect(SimpleCacheLock::VERSION).not_to be nil

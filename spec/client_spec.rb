@@ -1,3 +1,5 @@
+require "simple_cache_lock/client"
+
 RSpec.describe SimpleCacheLock::Client do
   custom_cache_store = Class.new do
     def initialize
