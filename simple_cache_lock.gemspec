@@ -28,7 +28,9 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bundler", "~> 2.3"
   spec.add_development_dependency "rake", "~> 13.0"
   spec.add_development_dependency "rspec", "~> 3.0"
+  spec.add_development_dependency "mock_redis", "0.31.0"
 
   spec.add_dependency "gem_config", "~> 0.3", ">= 0.3"
   spec.add_dependency "redlock", "~> 1.0", ">= 1.0.0"
+  spec.add_dependency "sorbet-runtime"
 end

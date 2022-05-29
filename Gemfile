@@ -12,4 +12,5 @@ group :development do
   gem "guard-rspec", require: false
   gem "guard-rubocop"
   gem "rubocop-rspec", require: false
+  gem "sorbet", group: :development
 end
