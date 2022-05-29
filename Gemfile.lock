@@ -125,6 +125,7 @@ DEPENDENCIES
   guard-rspec
   guard-rubocop
   mock_redis (= 0.31.0)
+  pry
   rake (~> 13.0)
   rspec (~> 3.0)
   rubocop-rspec

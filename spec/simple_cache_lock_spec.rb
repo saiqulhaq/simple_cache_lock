@@ -1,8 +1,6 @@
 # typed: false
 # frozen_string_literal: true
 
-require "simple_cache_lock"
-
 RSpec.describe SimpleCacheLock do
   it "has a version number" do
     expect(SimpleCacheLock::VERSION).not_to be_nil

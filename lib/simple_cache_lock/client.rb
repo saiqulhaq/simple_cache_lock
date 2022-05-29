@@ -15,12 +15,12 @@ module SimpleCacheLock
       return cache_store.get content_cache_key if cache_store.exists? content_cache_key
 
       @options = options
-      is_locked = redlock.lock(lock_key, lock_timeout)
+      is_locked = locker.lock(lock_key, lock_timeout)
 
       if is_locked == false
         Timeout.timeout(wait_timeout) do
           loop do
-            is_locked = redlock.lock(lock_key, wait_lock_timeout)
+            is_locked = locker.lock(lock_key, wait_lock_timeout)
             break unless is_locked == false
 
             sleep rand
@@ -28,15 +28,15 @@ module SimpleCacheLock
         end
 
         if cache_store.exists? content_cache_key
-          redlock.unlock(is_locked) unless is_locked
-          return cache_store.get key
+          locker.unlock(is_locked) unless is_locked
+          return cache_store.get content_cache_key
         end
       end
 
-      result = block.call
-      cache_store.set content_cache_key, result
-      redlock.unlock(is_locked)
-      result
+      content = block.call
+      write_data content_cache_key, content
+      locker.unlock(is_locked)
+      content
     rescue Redlock::LockError, Timeout::Error => e
       raise SimpleCacheLock::Error, e
     end
@@ -47,8 +47,8 @@ module SimpleCacheLock
       SimpleCacheLock.configuration.cache_store
     end
 
-    def redlock
-      @redlock ||= Redlock::Client.new(SimpleCacheLock.configuration.redis_urls)
+    def locker
+      @locker ||= Redlock::Client.new(SimpleCacheLock.configuration.redis_urls)
     end
 
     def lock_timeout
@@ -61,6 +61,10 @@ module SimpleCacheLock
 
     def wait_timeout
       @options[:wait_timeout] || SimpleCacheLock.configuration.default_wait_timeout
+    end
+
+    def write_data(content_cache_key, content)
+      cache_store.set content_cache_key, content
     end
   end
 end

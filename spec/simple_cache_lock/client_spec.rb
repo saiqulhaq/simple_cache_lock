@@ -5,11 +5,20 @@ require "simple_cache_lock/client"
 require "mock_redis"
 
 RSpec.describe SimpleCacheLock::Client do
+  def run_parallel(times, &block)
+    threads = Array.new(times).map do
+      Thread.new do
+        block.call
+      end
+    end
+
+    threads.map(&:join)
+  end
+
   subject :client do
     SimpleCacheLock.configure do |config|
       config.redis_urls = ["redis://localhost:6379"]
       config.cache_store = cache_store
-      config.default_wait_timeout = 1
     end
     described_class.new
   end
@@ -38,18 +47,36 @@ RSpec.describe SimpleCacheLock::Client do
       end
     end
 
-    # xcontext "when cache key is not locked" do
-    # end
+    context "when cache key is locked and exceeding time out" do
+      it "raise error" do # rubocop:disable RSpec/ExampleLength
+        expect do
+          run_parallel(3) do
+            client.lock("a", "b", lock_timeout: 2, wait_timeout: 2, wait_lock_timeout: 2) do
+              sleep 5
 
-    # context "when cache key is locked" do
-    #   context "when there is another process writing the same key" do
-    #     it "will wait and read the key instead" do
-    #     end
-    #   end
+              "foo"
+            end
+          end
+        end.to raise_error(SimpleCacheLock::Error)
+      end
+    end
 
-    #   context "when there is no another process writing the same key" do
-    #     it "will"
-    #   end
-    # end
+    context "when there are multiple lock called to the same cache key" do
+      it "writes the cache only once" do # rubocop:disable RSpec/ExampleLength
+        # rubocop:disable RSpec/MessageSpies
+        # rubocop:disable RSpec/SubjectStub
+        expect(client).to receive(:write_data).once.and_call_original
+        # rubocop:enable RSpec/MessageSpies
+        # rubocop:enable RSpec/SubjectStub
+
+        run_parallel(3) do
+          client.lock("a", "b") do
+            sleep 1
+
+            "foo"
+          end
+        end
+      end
+    end
   end
 end
