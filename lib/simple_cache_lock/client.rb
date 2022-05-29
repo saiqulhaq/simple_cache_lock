@@ -12,7 +12,7 @@ module SimpleCacheLock
     #   wait_timeout [Integer]
     #   wait_lock_timeout [Integer] optional
     def lock(lock_key, content_cache_key, options = {}, &block)
-      return cache_store.read content_cache_key if cache_store.exists? content_cache_key
+      return cache_store.get content_cache_key if cache_store.exists? content_cache_key
 
       @options = options
       is_locked = redlock.lock(lock_key, lock_timeout)
@@ -29,7 +29,7 @@ module SimpleCacheLock
 
         if cache_store.exists? content_cache_key
           redlock.unlock(is_locked) unless is_locked
-          return cache_store.read key
+          return cache_store.get key
         end
       end
 
