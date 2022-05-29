@@ -1,3 +1,4 @@
+# typed: false
 # frozen_string_literal: true
 
 require "simple_cache_lock/client"
