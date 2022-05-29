@@ -1,4 +1,12 @@
+# typed: strict
+# frozen_string_literal: true
+
 require "bundler/setup"
+require "pry"
+require "simplecov"
+
+SimpleCov.start
+
 require "simple_cache_lock"
 
 RSpec.configure do |config|

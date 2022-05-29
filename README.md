@@ -1,9 +1,8 @@
 # SimpleCacheLock
 
-Warn: No testing added!!! Use at your risk
-
-Lock and wait your cache until it finished. don't let concurrent processes write 
-same cache_key. make them to wait instead.
+Redis
+Lock and wait your cache until it finished.  
+Don't let concurrent processes write the same cache key multiple times because a race condition, so make them to wait instead.
 
 ## Installation
 

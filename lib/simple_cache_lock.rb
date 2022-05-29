@@ -1,3 +1,6 @@
+# typed: false
+# frozen_string_literal: true
+
 require "gem_config"
 require "redlock"
 require "simple_cache_lock/client"
@@ -11,8 +14,8 @@ module SimpleCacheLock
   with_configuration do
     has :redis_urls, classes: Array, default: []
     has :cache_store
-    has :default_lock_timeout, classes: Integer, default: 10000
+    has :default_lock_timeout, classes: Integer, default: 10_000
     has :default_wait_lock_timeout, classes: Integer, default: 1000
-    has :default_wait_timeout, classes: Integer, default: 20000
+    has :default_wait_timeout, classes: Integer, default: 20_000
   end
 end
