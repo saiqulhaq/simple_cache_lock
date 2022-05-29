@@ -11,4 +11,5 @@ group :development do
   gem "guard"
   gem "guard-rspec", require: false
   gem "guard-rubocop"
+  gem "rubocop-rspec", require: false
 end
