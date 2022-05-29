@@ -1,0 +1,25 @@
+name: Test
+
+on:
+  - push
+  - pull_request
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ruby-version: ['2.7', '3.0', '3.1']
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@8029ebd6e5bd8f4e0d6f7623ea76a01ec5b1010d
+      with:
+        ruby-version: ${{ matrix.ruby-version }}
+        bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+    - name: Run tests
+      env:
+        API_KEY: "${{secrets.API_KEY}}"
+        DYNAMIC_LINK_DOMAIN: "${{ secrets.DYNAMIC_LINK_DOMAIN }}"
+      run: bundle exec appraisal bundle install && bundle exec appraisal rspec
