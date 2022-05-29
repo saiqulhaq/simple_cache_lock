@@ -1,11 +1,14 @@
-source 'https://rubygems.org'
+# frozen_string_literal: true
+
+source "https://rubygems.org"
 
 # Specify your gem's dependencies in simple_cache_lock.gemspec
 gemspec
 
-gem 'simplecov', require: false, group: :test
-
 group :development do
-  gem 'guard'
-  gem 'guard-rspec', require: false
+  gem "standard", "1.12.1"
+  gem "simplecov", require: false, group: :test
+  gem "guard"
+  gem "guard-rspec", require: false
+  gem "guard-rubocop"
 end

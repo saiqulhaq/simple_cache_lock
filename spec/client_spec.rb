@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "simple_cache_lock/client"
 
 RSpec.describe SimpleCacheLock::Client do
@@ -5,6 +7,7 @@ RSpec.describe SimpleCacheLock::Client do
     def initialize
       @store = {}
     end
+
     def read(key)
       @store[key]
     end
@@ -20,20 +23,20 @@ RSpec.describe SimpleCacheLock::Client do
 
   subject do
     SimpleCacheLock.configure do |config|
-      config.redis_urls = ['redis://localhost:6379']
+      config.redis_urls = ["redis://localhost:6379"]
       config.cache_store = custom_cache_store.new
     end
     described_class.new
   end
 
-  describe 'lock' do
+  describe "lock" do
     it do
-      lock_key = 'foo'
-      content_cache_key = 'bar'
+      lock_key = "foo"
+      content_cache_key = "bar"
       foo = subject.lock(lock_key, content_cache_key) do
-        'bar'
+        "bar"
       end
-      expect(foo).to eq('bar')
+      expect(foo).to eq("bar")
     end
   end
 end
