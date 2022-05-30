@@ -6,11 +6,12 @@ source "https://rubygems.org"
 gemspec
 
 group :development do
+  gem "bundler-audit", "~> 0.9.1"
   gem "standard", "1.12.1"
   gem "simplecov", require: false, group: :test
   gem "guard"
   gem "guard-rspec", require: false
   gem "guard-rubocop"
   gem "rubocop-rspec", require: false
-  gem "sorbet", group: :development
+  gem "sorbet"
 end
