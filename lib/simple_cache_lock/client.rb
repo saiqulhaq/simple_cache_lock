@@ -19,11 +19,14 @@ module SimpleCacheLock
 
       if is_locked == false
         Timeout.timeout(wait_timeout) do
+          index = 0
           loop do
+            puts "hello #{index}"
+            index += 1
             is_locked = locker.lock(lock_key, wait_lock_timeout)
             break unless is_locked == false
 
-            sleep rand
+            sleep 1
           end
         end
 
@@ -48,7 +51,12 @@ module SimpleCacheLock
     end
 
     def locker
-      @locker ||= Redlock::Client.new(SimpleCacheLock.configuration.redis_urls)
+      @locker ||= Redlock::Client.new(SimpleCacheLock.configuration.redis_urls, {
+        # retry_count:   0,
+        # retry_delay:   200, # milliseconds
+        # retry_jitter:  50,  # milliseconds
+        # redis_timeout: 0.1  # seconds
+      })
     end
 
     def lock_timeout

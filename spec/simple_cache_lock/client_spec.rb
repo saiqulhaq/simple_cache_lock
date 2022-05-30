@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 
 require "simple_cache_lock/client"
-require "mock_redis"
+require "redis"
 
 RSpec.describe SimpleCacheLock::Client do
   def run_parallel(times, &block)
@@ -19,11 +19,14 @@ RSpec.describe SimpleCacheLock::Client do
     SimpleCacheLock.configure do |config|
       config.redis_urls = ["redis://localhost:6379"]
       config.cache_store = cache_store
+      config.default_lock_timeout = 100
+      config.default_wait_lock_timeout = 100
+      config.default_wait_timeout = 5
     end
     described_class.new
   end
 
-  let(:cache_store) { MockRedis.new }
+  let(:cache_store) { Redis.new }
 
   describe "#lock" do
     context "when the cache is exist" do
